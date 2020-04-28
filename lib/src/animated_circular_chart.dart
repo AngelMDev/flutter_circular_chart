@@ -125,11 +125,11 @@ class AnimatedCircularChart extends StatefulWidget {
 
     throw new FlutterError(
         'AnimatedCircularChart.of() called with a context that does not contain a AnimatedCircularChart.\n'
-        'No AnimatedCircularChart ancestor could be found starting from the context that was passed to AnimatedCircularChart.of(). '
-        'This can happen when the context provided is from the same StatefulWidget that '
-        'built the AnimatedCircularChart.\n'
-        'The context used was:\n'
-        '  $context');
+            'No AnimatedCircularChart ancestor could be found starting from the context that was passed to AnimatedCircularChart.of(). '
+            'This can happen when the context provided is from the same StatefulWidget that '
+            'built the AnimatedCircularChart.\n'
+            'The context used was:\n'
+            '  $context');
   }
 
   @override
@@ -255,6 +255,22 @@ class AnimatedCircularChartState extends State<AnimatedCircularChart>
 
   @override
   Widget build(BuildContext context) {
+    _assignRanks(widget.initialChartData);
+    _tween = new CircularChartTween(
+      _tween.evaluate(_animation),
+      new CircularChart.fromData(
+        size: widget.size,
+        data: widget.initialChartData,
+        chartType: widget.chartType,
+        stackRanks: _stackRanks,
+        entryRanks: _entryRanks,
+        percentageValues: widget.percentageValues,
+        holeRadius: widget.holeRadius,
+        startAngle: widget.startAngle,
+        edgeStyle: widget.edgeStyle,
+      ),
+    );
+    _animation.forward(from: 0.0);
     return new CustomPaint(
       size: widget.size,
       painter: new AnimatedCircularChartPainter(
